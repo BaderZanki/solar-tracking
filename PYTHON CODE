@@ -2,7 +2,6 @@ import serial
 import datetime
 import pvlib
 
-# Function to parse GPS and compass data from Arduino
 def parse_arduino_data(data):
     data = data.strip().split(',')
     if len(data) == 6:
@@ -15,26 +14,22 @@ def parse_arduino_data(data):
         return latitude, longitude, x, y, z, angle
     return None
 
-# Function to control stepper motors
 def control_stepper_motors(arduino, altitude, azimuth):
     vertical_steps = altitude_to_steps(altitude)
     horizontal_steps = azimuth_to_steps(azimuth)
     command = f"{vertical_steps},{horizontal_steps}\n"
     arduino.write(command.encode())
 
-# Convert altitude to steps
 def altitude_to_steps(altitude):
     step_angle = 1.8  # degrees per step, adjust as needed
     gear_ratio = 1  # adjust as needed
     return int(altitude / (step_angle * gear_ratio))
 
-# Convert azimuth to steps
 def azimuth_to_steps(azimuth):
     step_angle = 1.8  # degrees per step, adjust as needed
     gear_ratio = 1  # adjust as needed
     return int(azimuth / (step_angle * gear_ratio))
 
-# Create a serial connection to Arduino
 arduino_port = 'COMX'  # Replace 'COMX' with your Arduino's port
 baud_rate = 9600 # Set the baud rate (should match the Arduino's settings)
 
@@ -66,7 +61,7 @@ while True:
         print(f"Sun's Altitude: {altitude} degrees")
         print(f"Sun's Azimuth: {azimuth} degrees")
         
-        # Control stepper motors based on solar position
+        # Control stepper motors based on solar position (CHECK AGAIN IF WORKS )
         control_stepper_motors(arduino, altitude, azimuth)                                                                                                                                                                                                                                                                                                                                                       
         except KeyboardInterrupt:
         print("Program terminated by user.")
